@@ -20,3 +20,10 @@ export const incNumber=()=>{
     payload:name,
     };
  }
+
+
+ export const SetPincode = (component, pincode) => ({
+    type: 'SET_PIN',  
+    component,             
+    payload:pincode,              
+  });
