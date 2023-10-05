@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai';
 import { AiOutlineClose } from 'react-icons/ai';
 function Demo() {
+  const [toggle,setToggle]=useState(false)
   return (
     <>
     <div className='bg-[#2699fb] p-4' >
