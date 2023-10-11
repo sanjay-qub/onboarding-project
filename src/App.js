@@ -7,20 +7,22 @@ import System from './system/System';
 import Navbar from './header/Navbar';
 import Demo from './tailwind_project/Demo';
 import FormValidation from './validation/FormValidation';
-
+import Treeview from './surephase/Treeview';
+import Home from './surephase/Home';
 
 
 function App() {
   return (
     <div className="App">
-      <Navbar/>
+      {/* <Navbar/> */}
      <Routes>
      
       <Route path='/equipment' element={<Equipment/>}/>
       <Route path='/location' element={<Location/>}/>
       <Route path='/system' element={<System/>}/>
       <Route path='/demo' element={<Demo/>}/>
-      <Route path='/' element={<FormValidation/>}/>
+      <Route path='/' element={<Home/>}/>
+
      </Routes>
     </div>
   );

@@ -11,7 +11,7 @@ function Demo() {
         Sanjay
     </div>
     <AiOutlineMenu className='text-white text-2xl md:hidden block'/>
-    {/* <AiOutlineClose className='text-white text-2xl md:hidden block'/> */}
+ 
     <ul className='hidden md:flex text-white gap-5'>
         <li className='bg'>Home</li>
         <li>about</li>

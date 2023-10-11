@@ -20,6 +20,8 @@ import  { useState } from "react";
 
 import ChipInput from "material-ui-chip-input";
 
+import Treeview from "../surephase/Treeview";
+
 
 
 
@@ -42,7 +44,7 @@ const schema = yup.object({
   checkbox: yup.boolean().oneOf([true], "Please check this field"),
   chips: yup
     .array()
-    .of(yup.string().max(50))
+    .of(yup.string().max(50).min(1))
     .required("Please add at least one chip."),
 });
 
@@ -94,7 +96,9 @@ const handleChipDelete = (chipToDelete) => {
 
   return (
     <>
-      <Navigation />
+    
+    
+ 
       
 
       <div className="">
@@ -335,7 +339,7 @@ const handleChipDelete = (chipToDelete) => {
           </div>
 
 
-          <div className="mb-4 text-center"> {/* Add 'text-center' to center the button horizontally */}
+          <div className="mb-4 text-center"> 
   <button
     type="submit"
     className={`bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded${
