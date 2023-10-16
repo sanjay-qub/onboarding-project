@@ -15,7 +15,7 @@ function Treeview() {
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
     >
- <HandymanIcon/> <TreeItem className='text-left' nodeId="1"  label="9 Hills"  >
+ <TreeItem className='text-left' nodeId="1"  label="9 Hills"  >
         <TreeItem className='text-left' nodeId="2" label="Calendar"/>
       </TreeItem>
 

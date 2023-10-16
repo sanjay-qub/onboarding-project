@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 const pages = ['Allocation', 'Systems','Locations', 'Equipment','Business Entities','Admin','History'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -59,7 +60,10 @@ function Headers() {
 <AppBar position="static ">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-       <img src="/spl-logo-only.png" className='w-8' alt="" />
+            <Link to={"/"}>
+            <img src="/spl-logo-only.png" className='w-8' alt="" />
+            </Link>
+
       
           <Typography
             variant="h6"
@@ -76,7 +80,10 @@ function Headers() {
               textDecoration: 'none',
             }}
           >
+     
+          <Link to={"/"}>
           <img src="/surephase.png" className='w-36' alt="" />
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

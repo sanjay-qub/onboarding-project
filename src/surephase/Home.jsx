@@ -9,19 +9,21 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import Headers from './Headers';
+import Tabs from './Tabs';
+import { Link } from 'react-router-dom';
+
 function Home() {
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
         padding: theme.spacing(1),
-        textAlign: 'center',
+     
         color: theme.palette.text.secondary,
       }));
       
   return (
     <div>
-<Headers/>
 
  <br />
 
@@ -35,7 +37,7 @@ function Home() {
 
 
   <Grid xs={10}>
-  <Item><FormValidation/></Item>
+    <Item><Tabs/></Item>
   </Grid>
 
 
