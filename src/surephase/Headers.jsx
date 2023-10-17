@@ -14,8 +14,15 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-
-const pages = ['Allocation', 'Systems','Locations', 'Equipment','Business Entities','Admin','History'];
+const pages = [
+  { name: "Allocations", link: "/allocation" },
+  { name: "Systems", link: "/Systems" },
+  { name: 'Locations', link: '/locations' },
+  { name: 'Equipment', link: '/equipment' },
+  { name: 'Business Entities', link: '/business-entities' },
+  { name: 'Admin', link: '/admin' },
+  { name: 'History', link: '/history' }
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
@@ -115,10 +122,15 @@ function Headers() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+             {pages.map((page) => (
+                
+         <MenuItem className='bg-orange-400' key={page.link} onClick={handleCloseNavMenu}>
+     
+          <Typography className='bg-amber-500' textAlign="center">{page.name}</Typography>
+          
+      
+        </MenuItem>
+     
               ))}
             </Menu>
           </Box>
@@ -137,19 +149,23 @@ function Headers() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              bgcolor: 'warning.main'
             }}
           >
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+     
+          {pages.map((page) => (
+              <Link to={page.link}>
+  <Button 
+    key={page.link}
+    onClick={handleCloseNavMenu}
+    sx={{ my: 2, color: 'white', display: 'block' }}
+  >
+    {page.name}
+  </Button>
+  </Link>
             ))}
           </Box>
 

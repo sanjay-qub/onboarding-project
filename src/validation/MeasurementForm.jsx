@@ -17,16 +17,16 @@ function MeasurementForm() {
   const [rowData, setRowData] = useState([]);
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: "methodology",headerName:"methodology" },
-    { field: "connType" },
-    { field: "srcObjType" },
-    {field:"srcProduct"},
-    {field:"disposition"},
-    {field:"srcVolField"},
-    {field:"srcFieldType"},
-    {field:"targetProduct"},
-    {field:"tgtFieldType"},
-    {field:"targetFactorField"}
+    { field: "methodology",headerName:"methodology",filter: 'agSetColumnFilter' },
+    { field: "connType" ,filter: 'agSetColumnFilter' },
+    { field: "srcObjType",filter: 'agSetColumnFilter'  },
+    {field:"srcProduct",filter: 'agSetColumnFilter' },
+    {field:"disposition",filter: 'agSetColumnFilter' },
+    {field:"srcVolField",filter: 'agSetColumnFilter' },
+    {field:"srcFieldType",filter: 'agSetColumnFilter' },
+    {field:"targetProduct",filter: 'agSetColumnFilter' },
+    {field:"tgtFieldType",filter: 'agSetColumnFilter' },
+    {field:"targetFactorField",filter: 'agSetColumnFilter' }
   ]);
 
 
@@ -39,7 +39,7 @@ function MeasurementForm() {
         const connAttribute = data.map((obj) => obj);
     
         const exynos = connAttribute.map((objs) => objs.connAttributeList).flat();
-        
+        console.log(data)
      console.log("data",connAttribute)
         console.log("items",exynos)
         setRowData(exynos)
@@ -59,6 +59,7 @@ function MeasurementForm() {
       < AgGridReact 
             rowData={rowData} 
             columnDefs={columnDefs}
+    
             >
          </AgGridReact>
         </div>
