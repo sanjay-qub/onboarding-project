@@ -175,7 +175,7 @@ export default function BasicTabs() {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="General Info" {...a11yProps(0)} />
           <Tab label="Measurement" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -185,7 +185,7 @@ export default function BasicTabs() {
    <MeasurementForm/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three
+      
       </CustomTabPanel>
     </Box>
 
