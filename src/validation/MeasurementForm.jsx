@@ -2,22 +2,27 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import  { useState,useEffect } from "react";
-import { render } from "react-dom";
-import { AgGridReact } from "ag-grid-react";
+import  { useState,useEffect} from "react";
+import { createContext } from 'react';
 
+import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+import ViewForms from '../Forms/ViewForms';
 
+
+export const MyContext = createContext("");
 function MeasurementForm() {
 
   const [rowData, setRowData] = useState([]);
 
+  const [selectedRows, setSelectedRows] = useState([]);
+
   const [columnDefs, setColumnDefs] = useState([
-    { field: "methodology",headerName:"methodology",filter: 'agSetColumnFilter' },
+    { field: "methodology",headerName:"methodology",filter: 'agSetColumnFilter',checkboxSelection: true },
     { field: "connType" ,filter: 'agSetColumnFilter' },
     { field: "srcObjType",filter: 'agSetColumnFilter'  },
     {field:"srcProduct",filter: 'agSetColumnFilter' },
@@ -28,7 +33,7 @@ function MeasurementForm() {
     {field:"tgtFieldType",filter: 'agSetColumnFilter' },
     {field:"targetFactorField",filter: 'agSetColumnFilter' }
   ]);
-
+ 
 
 
 
@@ -40,17 +45,35 @@ function MeasurementForm() {
     
         const exynos = connAttribute.map((objs) => objs.connAttributeList).flat();
         console.log(data)
-     console.log("data",connAttribute)
+      console.log("data",connAttribute)
         console.log("items",exynos)
         setRowData(exynos)
         
       });
   }, []);
  
+  const onSelectionChanged = (event) => {
+  
+    const selectedNodes = event.api.getSelectedNodes()[0].data
   
 
+    setSelectedRows(selectedNodes);
+    console.log(selectedRows)
+  };
+  
+
+  useEffect(() => {
+    console.log("sleted rows",selectedRows);
+  }, [selectedRows]);
+  
+
+
   return (
+    <>
     <Card >
+    <MyContext.Provider value={selectedRows}>
+  <ViewForms/>
+</MyContext.Provider>
     <CardActionArea>
 
       <CardContent>
@@ -59,7 +82,9 @@ function MeasurementForm() {
       < AgGridReact 
             rowData={rowData} 
             columnDefs={columnDefs}
-    
+          
+            rowSelection={'single'}
+            onSelectionChanged={onSelectionChanged}
             >
          </AgGridReact>
         </div>
@@ -68,6 +93,10 @@ function MeasurementForm() {
       </CardContent>
     </CardActionArea>
   </Card>
+
+
+
+  </>
   )
 }
 
