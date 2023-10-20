@@ -27,3 +27,8 @@ export const incNumber=()=>{
     component,             
     payload:pincode,              
   });
+
+  export const SetRowdata=(data)=>({
+    type:'SET_ROW_DATA',
+    payload:data
+  })
