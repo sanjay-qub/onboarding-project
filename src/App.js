@@ -11,6 +11,10 @@ import UseMemo1 from './useMemo/UseMemo1';
 import CallbackMain from './useCallback/CallbackMain';
 import UseRef1 from './useRef/UseRef1';
 import ToggleExample from './customHook2/ToggleExample';
+import Reducer1 from './useReducer/Reducer1';
+
+
+
 
 
 
@@ -25,6 +29,9 @@ function App() {
      <CallbackMain/>
      <UseRef1/>
      <ToggleExample/>
+     <Reducer1/>
+  
+     
     </div>
   );
 }
