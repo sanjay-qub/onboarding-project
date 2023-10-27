@@ -7,6 +7,13 @@ import UseStateObject from './useState/UseStateObject';
 import Counter1 from './CustomHook/Counter1';
 import Counter2 from './CustomHook/Counter2';
 import ClearUp from './useEffect/ClearnUp';
+import UseMemo1 from './useMemo/UseMemo1';
+import CallbackMain from './useCallback/CallbackMain';
+import UseRef1 from './useRef/UseRef1';
+import ToggleExample from './customHook2/ToggleExample';
+
+
+
 
 function App() {
   return (
@@ -14,6 +21,10 @@ function App() {
       <Counter1/>
       <Counter2/>
       <ClearUp/>
+     <UseMemo1/>
+     <CallbackMain/>
+     <UseRef1/>
+     <ToggleExample/>
     </div>
   );
 }
