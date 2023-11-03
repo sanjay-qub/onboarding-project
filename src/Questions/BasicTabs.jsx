@@ -9,7 +9,9 @@ import { useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { updateSeletedAnswer } from '../Store/quizzSlice';
 import { Link } from 'react-router-dom';
-
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,6 +41,7 @@ CustomTabPanel.propTypes = {
 export default function BasicTabs() {
   const dispatch = useDispatch();
   const quizzdata = useSelector((state) => state.quizzSlice.quizData);
+  console.log("quizdata",quizzdata)
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [value, setValue] = useState(0);
 
@@ -79,42 +82,57 @@ export default function BasicTabs() {
   }
     return (
     <>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            {quizzdata.map((question, index) => (
-              <Tab key={index} label={`Question ${index + 1}`} />
-            ))}
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={value}>
-          <Typography>{quizzdata[value].question}</Typography>
-          <Box>
-            {Object.keys(quizzdata[value].answers)
-              .filter((key) => key.startsWith('answer_'))
-              .map((key) => {
-                const answerText = quizzdata[value].answers[key];
-                if (answerText) {
-                  return (
-                    <FormControlLabel
-                      key={key}
-                      control={
-                        <Checkbox
-                          checked={selectedAnswers[value]?.answer === key}
-                          onChange={() => handleCheckboxChange(value, key)}
-                        />
-                      }
-                      label={answerText}
+    <Box sx={{ width: '100%' }}>
+    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
+  {quizzdata.map((question, index) => (
+    <Tab
+      key={index}
+      label={`Question ${index + 1}`}
+      sx={{
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        padding: '8px',
+        margin: '0 8px',
+        textAlign: 'center',
+        display: 'inline-block',
+        minWidth: '120px', 
+      }}
+    />
+  ))}
+</Tabs>
+
+
+  
+  <CustomTabPanel value={value} index={value}>
+    <Box sx={{ border: '1px solid #ccc', padding: '16px', margin: '16px 0' }}>
+  <Typography>  <QuestionMarkIcon/>  {quizzdata[value].question}</Typography>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)', gap: '2px' }}>
+        {Object.keys(quizzdata[value].answers)
+          .filter((key) => key.startsWith('answer_'))
+          .map((key) => {
+            const answerText = quizzdata[value].answers[key];
+            if (answerText) {
+              return (
+                <FormControlLabel
+                  key={key}
+                  control={
+                    <Checkbox
+                      checked={selectedAnswers[value]?.answer === key}
+                      onChange={() => handleCheckboxChange(value, key)}
                     />
-                  );
-                }
-                return null;
-              })}
-          </Box>
-        </CustomTabPanel>
+                  }
+                  label={answerText}
+                />
+              );
+            }
+            return null;
+          })}
       </Box>
-      <Link to={'/Quizz/Result'}>
-        <button onClick={handleSubmit} >Submit</button>
+    </Box>
+  </CustomTabPanel>
+</Box>
+      <Link to={'/Quizz/Result'} className='flex justify-center'>
+        <Button className='' variant="contained" color="success"  onClick={handleSubmit} >Completed</Button>
       </Link>
     </>
   );

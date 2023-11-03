@@ -50,23 +50,34 @@ function Result() {
     }
 
     return (
-        <div>
-            <h1>Result</h1>
-            {results.map((result, index) => (
-                <div key={index}>
-                    <p>
-                        {result.isCorrect ?
-                            `Question: ${result.question} - Your Answer: ${result.userAnswer} - Correct!` :
-                            `Question: ${result.question} - Your Answer: ${result.userAnswer} - Correct Answer: ${result.correctAnswer}`
-                        }
-                    </p>
-                </div>
-            ))}
-            <p>Score: {score}</p>
-            <p>Correct Answers: {correctAnswers}</p>
-            <p>Incorrect Answers: {incorrectAnswers}</p>
-            <p>Grade: {grade}</p>
-        </div>
+        <div className="p-5">
+        <h1 className="text-2xl text-center font-bold mb-4">Result</h1>
+        <p className="text-green-600 text-center  font-bold text-2xl mb-4">Grade: {grade}</p>
+        <p className="text-green-600 text-center  font-bold text-lg mb-4">Score: {score}</p>
+        <p className='text-center '>Correct Answers: {correctAnswers}</p>
+        <p className='text-center '>Incorrect Answers: {incorrectAnswers}</p>
+<br />
+
+<div className="flex flex-wrap mb-8">
+  {results.map((result, index) => (
+    <div key={index} className="w-1/2 mb-4 p-4 rounded-full bg-blue-200">
+      <p className="mb-2 pl-6">
+        Question: {result.question}
+      </p>
+      <p className="mb-2  pl-6">
+        Your Answer: {result.userAnswer}
+      </p>
+      <p className='pl-6'> 
+        Correct Answer: {result.correctAnswer}
+      </p>
+    </div>
+  ))}
+</div>
+
+
+      </div>
+      
+      
     );
 }
 

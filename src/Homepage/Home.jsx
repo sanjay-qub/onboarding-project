@@ -3,11 +3,16 @@ import { useSelector } from 'react-redux';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Grid, TextField } from '@mui/material';
+import {  InputAdornment, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setSelectedQuiz, updateQuizArray } from '../Store/quizzSlice';
 import { Link } from 'react-router-dom';
-
+import SearchIcon from '@mui/icons-material/Search';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import Carousel from '../carousel/Carousel';
 
 function Home() {
     const dispatch = useDispatch();
@@ -25,6 +30,13 @@ function Home() {
    
 
    
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 
 
     const quizArray=[
@@ -44,20 +56,20 @@ function Home() {
        level:"Hard"
        },
        {
-        title:"DevOps Interview Questions",
-        category:"DevOps",
+        title:"Code Interview Questions",
+        category:"Code",
         level:"Easy"
 
        },
        {
-        title:"DevOps Interview Questions",
-        category:"DevOps",
+        title:"Code Interview Questions",
+        category:"Code",
         level:"Medium"
 
        },
        {
-        title:"DevOps Interview Questions",
-        category:"DevOps",
+        title:"Code Interview Questions",
+        category:"Code",
         level:"Hard"
 
        },
@@ -73,12 +85,7 @@ function Home() {
         level:"Medium"
 
        },
-       {
-        title:"Docker Interview Questions",
-        category:"Docker",
-        level:"Hard"
-
-       },
+     
  ]
 
  const handleCardClick = (title, category, level) => {
@@ -107,36 +114,61 @@ function Home() {
 
   return (
     <> 
-      <TextField
-        label="Search"
-        variant="outlined"
-        value={search}
-        onChange={handleSearchChange}
-        style={{ margin: '20px 0' }}
-      />
-  <Grid container justifyContent="center" spacing={3}>
-                {(search ? filteredQuizArray : quizArrays.length > 0 ? quizArrays : quizArray).map((question, index) => (
-                    <Grid item key={index} xs={12} sm={6} md={4}>
-                              <Link to={"/Quizz"}>
-                        <Card
-                            sx={{ maxWidth: 345, marginBottom: '20px' }}
-                            onClick={() =>
-                                handleCardClick(question.title, question.category, question.level)
-                 
-                            }
-                        >
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {question.title}
-                                </Typography>
-                                <Typography color="text.secondary">Category: {question.category}</Typography>
-                                <Typography color="text.secondary">Level: {question.level}</Typography>
-                            </CardContent>
-                        </Card>
-                        </Link>
-                    </Grid>
-        ))}
-      </Grid>
+      <Carousel/>
+ <br />
+      <section className=' bg-gray-200  mx-auto justifyContent="center"'>
+      <Grid container justifyContent="center" spacing={2}>
+  <Grid item xs={12} style={{ textAlign: 'center' }}>
+    <TextField 
+      className="mx-auto w-96"
+      label="quick search"
+      value={search}
+      onChange={handleSearchChange}
+      style={{ margin: '20px 0' }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
+    />
+  </Grid>
+
+
+  {(search ? filteredQuizArray : quizArrays.length > 0 ? quizArrays : quizArray).map((question, index) => (
+  <Grid item xs={5} key={index}>
+    <Link to="/Quizz">
+      <Card
+        className="mx-2 w-34"
+        style={{ borderRadius: "30px" }} 
+        onClick={() => handleCardClick(question.title, question.category, question.level)}
+      >
+        <CardContent>
+          <Typography variant="h5" component="div" className="text-red-500">
+            {question.title}
+          </Typography>
+          <Typography color="textSecondary" className="mb-2">
+            Category: {question.category} Difficulty: {question.level}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Link>
+  </Grid>
+))}
+
+</Grid>
+
+</section>
+
+ 
+
+  
+    
+    
+  
+
+  
   
   </>
 

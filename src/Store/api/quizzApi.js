@@ -16,7 +16,7 @@ export const fetchQuizData = createAsyncThunk('quiz/fetchQuizData',
         },
       });
 
-      // Filter and include only the first four non-null answers
+
       const filteredData = response.data.map(item => {
         const allowedKeys = ['answer_a', 'answer_b', 'answer_c', 'answer_d'];
         const filteredAnswers = Object.keys(item.answers).reduce((acc, key) => {
@@ -28,7 +28,7 @@ export const fetchQuizData = createAsyncThunk('quiz/fetchQuizData',
         return { ...item, answers: filteredAnswers };
       });
 
-      // Filter out objects with null 'correct_answer'
+    
       const finalFilteredData = filteredData.filter(item => item.correct_answer !== null);
 
       return finalFilteredData;

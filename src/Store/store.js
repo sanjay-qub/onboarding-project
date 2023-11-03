@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk'; // Import redux-thunk for async action handling
+import thunk from 'redux-thunk'; 
 import rootReducer from './index';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk)) // Add thunk middleware here
+  composeEnhancers(applyMiddleware(thunk)) 
 );
 
 export default store;

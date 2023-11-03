@@ -21,6 +21,8 @@ function Quizz() {
   return (
     <div>
 
+     <br />
+
 <BasicTabs/>
     </div>
   )
