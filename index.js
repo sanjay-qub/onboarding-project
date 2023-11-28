@@ -4,8 +4,9 @@ dotenv.config();
 const router=require('./src/routes/userRoutes')
 
 const cors=require("cors")
-// server.use(cors({origin:"http://localhost:3000"}))
 const server=express()
+
+server.use(cors())
 server.use(express.json())
 server.use(router)
 const db = require("./src/config/db");
