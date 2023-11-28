@@ -20,9 +20,12 @@ function Quizz() {
     
   return (
     <div>
-
-     <br />
-
+     <header className='header text-white bg-[#24292E] h-60 flex justify-center items-center flex-col'>
+  <div className="container text-center">
+    <h4 className='text-5xl leading-6 font-extralight text-[#fff]'>Start Quizz</h4>
+  
+  </div>
+</header> <br />
 <BasicTabs/>
     </div>
   )

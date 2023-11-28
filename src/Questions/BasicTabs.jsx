@@ -41,6 +41,8 @@ CustomTabPanel.propTypes = {
 export default function BasicTabs() {
   const dispatch = useDispatch();
   const quizzdata = useSelector((state) => state.quizzSlice.quizData);
+  if(quizzdata){  localStorage.setItem("quizzdata", quizzdata[0].category);}
+
   console.log("quizdata",quizzdata)
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [value, setValue] = useState(0);
@@ -81,59 +83,131 @@ export default function BasicTabs() {
     return <div>Loading...</div>;
   }
     return (
-    <>
-    <Box sx={{ width: '100%' }}>
-    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
+      <>
+      <div className="w-full ">
+
+
+
+
+
+<Tabs value={value} onChange={handleChange} variant="scrollable" indicatorColor="transparent">
   {quizzdata.map((question, index) => (
-    <Tab
+    <Tab 
       key={index}
       label={`Question ${index + 1}`}
       sx={{
         border: '1px solid #ccc',
         borderRadius: '8px',
-        padding: '8px',
+        padding: '20px',
         margin: '0 8px',
         textAlign: 'center',
-        display: 'inline-block',
-        minWidth: '120px', 
+        display: 'grid',
+        gridTemplateColumns: '4fr 6fr',
+        gap: '30px',
+        background: value === index ? '#3cd458' : '',
+        transition: 'background-color 0.3s',
+        color: 'black', 
+        '&.Mui-selected': {
+          color: 'white',
+        },
       }}
     />
   ))}
 </Tabs>
 
 
-  
-  <CustomTabPanel value={value} index={value}>
-    <Box sx={{ border: '1px solid #ccc', padding: '16px', margin: '16px 0' }}>
-  <Typography>  <QuestionMarkIcon/>  {quizzdata[value].question}</Typography>
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)', gap: '2px' }}>
-        {Object.keys(quizzdata[value].answers)
-          .filter((key) => key.startsWith('answer_'))
-          .map((key) => {
-            const answerText = quizzdata[value].answers[key];
-            if (answerText) {
-              return (
-                <FormControlLabel
-                  key={key}
-                  control={
-                    <Checkbox
-                      checked={selectedAnswers[value]?.answer === key}
-                      onChange={() => handleCheckboxChange(value, key)}
-                    />
+
+
+
+    
+        <CustomTabPanel value={value} index={value}>
+          <div className="border-2 border-gray-300 p-4 my-4">
+            <div className="text-center mb-4">
+              <QuestionMarkIcon />
+              {quizzdata[value].question}
+            </div>
+    
+            <div className="lg:grid grid-cols-1 gap-4  sm:grid-cols-2 ms-12 lg:ms-36  ">
+              {Object.keys(quizzdata[value].answers)
+                .filter((key) => key.startsWith('answer_'))
+                .map((key) => {
+                  const answerText = quizzdata[value].answers[key];
+                  if (answerText) {
+                    return (
+                      <Button
+                        key={key}
+                        className="w-full  "
+                       variant="text"
+                        style={{
+                          border: '1px solid black',
+                          borderRadius: 'rounded', 
+                          background: selectedAnswers[value]?.answer === key ? '#3cd458' : '',
+                          color: selectedAnswers[value]?.answer === key ? 'white':'black',
+                          height: '3rem',
+                          maxWidth:"80%",
+                          fontSize:"10px",
+                          marginTop:"5px",
+                          '@media (max-width: 667px)': { 
+                            height: '20rem',
+                            marginTop:"40px" 
+                          },
+                        
+                        }}
+                        onClick={() => handleCheckboxChange(value, key)}
+                      >
+                        {answerText}
+                      </Button>
+                    );
                   }
-                  label={answerText}
-                />
-              );
-            }
-            return null;
-          })}
-      </Box>
-    </Box>
-  </CustomTabPanel>
-</Box>
-      <Link to={'/Quizz/Result'} className='flex justify-center'>
-        <Button className='' variant="contained" color="success"  onClick={handleSubmit} >Completed</Button>
-      </Link>
+                  return null;
+                })}
+            </div>
+
+            
+            <div className="flex justify-end space-x-4 mt-4">
+  <Button
+    variant="contained"
+    style={{
+      border: '1px solid black', 
+      borderRadius: 'rounded', 
+      color: 'black', 
+      backgroundColor: 'transparent', 
+      padding: '10px', 
+    }}
+    onClick={() => setValue((prevValue) => (prevValue - 1 + quizzdata.length) % quizzdata.length)}
+  >
+    Previous
+  </Button>
+  <Button
+    variant="contained"
+    style={{
+      border: '1px solid black', 
+      borderRadius: 'rounded', 
+      color: 'black', 
+      backgroundColor: 'transparent', 
+      padding: '10px', 
+    }}
+    onClick={() => setValue((prevValue) => (prevValue + 1) % quizzdata.length)}
+  >
+    Next
+  </Button>
+</div>
+
+          </div>
+        </CustomTabPanel>
+    
+        <Link to="/Quizz/Result" className="flex justify-center">
+          <Button 
+        
+            className="w-11/12"
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            FINISH QUIZZ
+          </Button>
+        </Link>
+      </div>
     </>
+    
   );
 }

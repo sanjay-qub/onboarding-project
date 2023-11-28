@@ -7,7 +7,8 @@ const initialState = {
     quizArray: [],
     status: 'idle', 
     error: null,    
-    quizData: null
+    quizData: null,
+    UserDetails:""
 };
 
 const quizSlice = createSlice({
@@ -24,6 +25,9 @@ const quizSlice = createSlice({
 
     updateSeletedAnswer: (state, action) => {
         state.seletedAnswer = action.payload;
+      },
+    setUserDetails: (state, action) => {
+        state.UserDetails = action.payload;
       },
   },
 
@@ -42,6 +46,6 @@ const quizSlice = createSlice({
   },
 });
 
-export const {updateQuizArray, setSelectedQuiz,updateSeletedAnswer } = quizSlice.actions; 
+export const {updateQuizArray, setSelectedQuiz,updateSeletedAnswer,setUserDetails } = quizSlice.actions; 
 
 export default quizSlice.reducer;

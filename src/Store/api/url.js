@@ -1,1 +1,1 @@
-export const GET_QUIZZES="https://quizapi.io/api/v1/questions?limit=30&category="
+export const GET_QUIZZES="https://quizapi.io/api/v1/questions?limit=100&category="

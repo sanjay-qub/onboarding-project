@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { GET_QUIZZES } from './url';
 import { useSelector } from 'react-redux';
 
-
 export const fetchQuizData = createAsyncThunk('quiz/fetchQuizData',
   async ({ category, easy }) => {
     const url = `${GET_QUIZZES}${category}&difficulty=${easy}`;
@@ -15,7 +14,6 @@ export const fetchQuizData = createAsyncThunk('quiz/fetchQuizData',
           'X-Api-Key': 'FPxcuWls02NBGHwWi16e1v8VDbyLQwBc8iEH1Vvr',
         },
       });
-
 
       const filteredData = response.data.map(item => {
         const allowedKeys = ['answer_a', 'answer_b', 'answer_c', 'answer_d'];
@@ -28,8 +26,12 @@ export const fetchQuizData = createAsyncThunk('quiz/fetchQuizData',
         return { ...item, answers: filteredAnswers };
       });
 
-    
-      const finalFilteredData = filteredData.filter(item => item.correct_answer !== null);
+      const maxLength = 50; 
+      const finalFilteredData = filteredData.filter(item => {
+        const answerLengths = Object.values(item.answers).map(answer => answer.length);
+        const hasExcessiveLength = answerLengths.some(length => length > maxLength);
+        return !hasExcessiveLength && item.correct_answer !== null;
+      });
 
       return finalFilteredData;
     } catch (error) {

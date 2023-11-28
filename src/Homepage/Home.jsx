@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {  InputAdornment, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setSelectedQuiz, updateQuizArray } from '../Store/quizzSlice';
+import { setSelectedQuiz, updateQuizArray,setUserDetails} from '../Store/quizzSlice';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
@@ -13,8 +13,36 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Carousel from '../carousel/Carousel';
+import Button from '@mui/material/Button';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import Modal from '@mui/material/Modal';
+
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const validationSchema = yup.object({
+  name: yup.string().required('Name is required'),
+  email: yup.string().email('Invalid email address').required('Email is required'),
+});
 
 function Home() {
+  const [open, setOpen] = React.useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
     const dispatch = useDispatch();
     const [search, setSearch] = useState('');
     const [filteredQuizArray, setFilteredQuizArray] = useState([]);
@@ -23,7 +51,7 @@ function Home() {
 
 
    useEffect(() => {
-    dispatch(updateQuizArray(quizArray))
+    dispatch(setUserDetails(quizArray))
    
     
    }, [])
@@ -99,7 +127,7 @@ const Item = styled(Paper)(({ theme }) => ({
     setSearch(event.target.value);
 
 
-    const filtered = quizArrays.filter(
+    const filtered = quizArray.filter(
       (item) =>
         item.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
         item.category.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -108,73 +136,89 @@ const Item = styled(Paper)(({ theme }) => ({
     setFilteredQuizArray(filtered);
   };
  
-
+  const handleStartQuiz = () => {
+    console.log('Name:', name);
+    console.log('Email:', email);
+    dispatch(setUserDetails({ name, email}));
+  };
 
 
 
   return (
-    <> 
-      <Carousel/>
- <br />
-      <section className=' bg-gray-200  mx-auto justifyContent="center"'>
-      <Grid container justifyContent="center" spacing={2}>
-  <Grid item xs={12} style={{ textAlign: 'center' }}>
-    <TextField 
-      className="mx-auto w-96"
-      label="quick search"
-      value={search}
-      onChange={handleSearchChange}
-      style={{ margin: '20px 0' }}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-      }}
-    />
-  </Grid>
-
-
-  {(search ? filteredQuizArray : quizArrays.length > 0 ? quizArrays : quizArray).map((question, index) => (
-  <Grid item xs={5} key={index}>
-    <Link to="/Quizz">
-      <Card
-        className="mx-2 w-34"
-        style={{ borderRadius: "30px" }} 
-        onClick={() => handleCardClick(question.title, question.category, question.level)}
-      >
-        <CardContent>
-          <Typography variant="h5" component="div" className="text-red-500">
-            {question.title}
-          </Typography>
-          <Typography color="textSecondary" className="mb-2">
-            Category: {question.category} Difficulty: {question.level}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
-  </Grid>
-))}
-
-</Grid>
-
-</section>
-
+    <>
+    <Carousel />
+    <br />
+  
+    <section className='bg-[#fafbfb] mx-auto flex flex-col items-center p-4'>
+      <p>Check out our predefined quizzes! You can use the search bar to filter what you need.</p>
+      <br />
+  
+      <input
+        className="mx-auto w-96 px-3 py-2 border rounded-lg text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="text"
+        placeholder="QUIZZ search"
+        value={search}
+        onChange={handleSearchChange}
+        style={{ margin: '20px 0' }}
+      />
+      <br />
+  
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {(search ? filteredQuizArray : quizArrays.length > 0 ? quizArrays : quizArray).map((question, index) => (
+       
+            <div  onClick={() => handleCardClick(question.title, question.category, question.level)}  className="shadow-2xl bg-[#fafbfb] max-h-36 overflow-hidden">
+              <div onClick={handleOpen} className="p-4">
+                <div className="tracking-wide font-medium font-sans">{question.title}</div>
+                <div className="mb-2">
+                  Category: {question.category} Difficulty: {question.level}
+                </div>
+              </div>
+            </div>
  
+        ))}
+      </div>
 
-  
-    
-    
-  
 
-  
-  
+     
+      <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="bg-white p-8 w-96">
+          <h2 className="text-2xl font-bold mb-4">Submit the Details</h2>
+
+          <input
+            onChange={(e) => setName(e.target.value)}
+            type="text"
+            placeholder="Name"
+            className="block w-full border p-2 mb-4"
+          />
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Email"
+            className="block w-full border p-2 mb-4"
+          />
+
+          <Link to="/Quizz" className="block w-full text-center">
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700"
+              onClick={handleStartQuiz}
+            >
+              Start Quiz
+            </button>
+          </Link>
+        </div>
+      </div>
+    </Modal>
+    </section>
   </>
-
+  
   
    
   )
 }
-
 export default Home
