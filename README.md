@@ -1,5 +1,5 @@
            Quiz Back End CRUD Operations 
------------------------------------------
+---------------------------------------------------
 
 
 
@@ -8,11 +8,11 @@
 ![Post Request](/backend/public/screenshot/Screenshot1.png)
 
 
-This is just creating a User in backend using MongoDB and NodeJS
+This is just save Quiz Result to MongoDB
 
 ## Get all Result for LeaderBoard
 
-![Update User](/backend/public/screenshot/Screenshot2.png)
+![get Request](/backend/public/screenshot/Screenshot2.png)
 
-This is just Updating a User in backend using MongoDB and NodeJS
+This is Getting all quiz Result from MongoDB for LeaderBoard
 
