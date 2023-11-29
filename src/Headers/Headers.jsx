@@ -17,14 +17,10 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import { useState } from 'react';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 const pages = [
-  { name: "Features", link: "/" },
-  { name: "API", link: "/" },
-  { name: 'QUIZ', link: '/' },
-  { name: 'CONTACT', link: '/' },
-  { name: 'CONTRIBUTE', link: '/' },
-  { name: '|',},
+
 ];
 const settings = [];
 
@@ -61,17 +57,11 @@ function Headers() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleAvatarClick = (event) => {
-    if (User.name && User.email) {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
-  const handleClose = () => {
+  const handlePopoverClose = () => {
     setAnchorEl(null);
   };
 
@@ -147,85 +137,44 @@ function Headers() {
                   </Button>
                 </Link>
               ))}
+                <Tooltip title="LeaderBoard" style={{ marginLeft: 'auto' }} >
+                <Link to={"/leaderBoard"} >
+                  <IconButton>
+                    <LeaderboardIcon fontSize="medium" style={{ color: 'white',marginTop:"3px" }} />
+                  </IconButton>
+
+                </Link>
+              </Tooltip>
 
 
-              <Button 
-                sx={{
-                  backgroundColor: '#3cd458', 
-                  fontSize: '0.8rem',
-                  borderRadius: '2.25rem',
-                  padding: '0.5rem 1rem',
-                  marginRight: '0.5rem',
-                  width: "6rem",
-                  height: "37px",
-                  marginTop: "16px",
-                }}
-                variant="contained"
-                color="primary"
+               <Tooltip 
+                title={
+                  User.name && User.email
+                    ? `Name: ${User.name} \nEmail: ${User.email}`
+                    : 'No user Data'
+                }
               >
-                Sign In
-              </Button>
-              <Button
-                sx={{
-                  backgroundColor: '#3cd458', 
-                  fontSize: '0.8rem',
-                  borderRadius: '2.25rem',
-                  padding: '0.5rem 1rem',
-                  marginRight: '0.5rem',
-                  width: "6rem",
-                  height: "37px",
-                  marginTop: "16px",
-                }}
-                variant="contained"
-                color="primary"
-              >
-                Sign Up
-              </Button>
+                <IconButton  onClick={handlePopoverOpen}>
+                  {User.name && User.email ? (
+                    <Avatar alt="">
+                      {User.name.charAt(0).toUpperCase()}
+                    </Avatar>
+                  ) : (
+                    <Avatar src="/broken-image.jpg" />
+                  )}
+                </IconButton>
+              </Tooltip>
 
-              <Tooltip  placement="right">
-        <IconButton onClick={handleAvatarClick}>
-          <Avatar>{User.name ? User.name[0] : '?'}</Avatar>
-        </IconButton>
-      </Tooltip>
-      {User.name && User.email && (
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <div style={{ padding: '10px' }}>
-          <p>Name: {User.name}</p>
-          <p>Email: {User.email}</p>
-        </div>
-      </Popover>
-    )}
-<Link to={"/leaderBoard"}>
-    <Button
-                sx={{
-                  backgroundColor: '#3cd458', 
-                  fontSize: '0.8rem',
-                  borderRadius: '2.25rem',
-                  padding: '0.5rem 1rem',
-                  marginRight: '0.5rem',
-                  width: "10rem",
-                  height: "37px",
-                  marginTop: "16px",
-                }}
-                variant="contained"
-                color="primary"
-              >LeaderBoard
-              </Button>
-              </Link>
+              {/* LeaderBoard Tooltip */}
+            
+
+
+
             </Box>
           </Toolbar>
+
+
+
         </Container>
       </AppBar>
     </ThemeProvider>

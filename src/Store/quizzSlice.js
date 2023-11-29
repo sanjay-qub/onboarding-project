@@ -7,7 +7,7 @@ const initialState = {
     quizArray: [],
     status: 'idle', 
     error: null,    
-    quizData: null,
+    quizData: "",
     UserDetails:""
 };
 

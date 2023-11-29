@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Result() {
+  const navigate = useNavigate();
   const quizData = useSelector((state) => state.quizzSlice.quizData);
   const selecteData = useSelector((state) => state.quizzSlice.seletedAnswer);
   const User = useSelector((state) => state.quizzSlice.UserDetails);
@@ -10,68 +12,85 @@ function Result() {
   console.log('Main data', User);
   console.log('seletd data', category);
 
-  const results = selecteData.map((answer) => {
-    const question = quizData.find((item) => item.id === answer.id);
-    const correctAnswer = question.correct_answer;
-    const isCorrect = answer.answer === correctAnswer;
-
-    const selectedText = question.answers[answer.answer];
-    const correctText = question.answers[correctAnswer];
-
-    return {
-      id: answer.id,
-      isCorrect,
-      userAnswer: selectedText,
-      correctAnswer: correctText,
-      question: question.question,
-    };
-  });
-
-  const totalQuestions = quizData.length;
-  const correctAnswers = results.filter((result) => result.isCorrect).length;
-  const incorrectAnswers = totalQuestions - correctAnswers;
-  const score = correctAnswers;
-  const percentage = (score / totalQuestions) * 100;
-
-  let grade;
-  if (percentage >= 80) {
-    grade = 'A';
-  } else if (percentage >= 70) {
-    grade = 'B';
-  } else if (percentage >= 40) {
-    grade = 'C';
-  } else if (percentage >= 20) {
-    grade = 'D';
-  } else {
-    grade = 'F';
-  }
+  const [grade, setGrade] = useState('');
+  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
-    console.log('Result component rendered');
-  
-    const saveResultToMongo = async () => {
-      const resultData = {
-        user: User,
-        category: category,
-        grade: grade,
-        score: score,
-      };
-      console.log('resultData', resultData);
-  
-      try {
-        const response = await axios.post('http://localhost:8011/saveResult', resultData);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error saving quiz result:', error.message);
+    // Check if necessary Redux data is not available and navigate away
+    if (!selecteData || !quizData) {
+      navigate('/');
+    } else {
+      const results = selecteData.map((answer) => {
+        const question = quizData.find((item) => item.id === answer.id);
+        const correctAnswer = question.correct_answer;
+        const isCorrect = answer.answer === correctAnswer;
+
+        const selectedText = question.answers[answer.answer];
+        const correctText = question.answers[correctAnswer];
+
+        return {
+          id: answer.id,
+          isCorrect,
+          userAnswer: selectedText,
+          correctAnswer: correctText,
+          question: question.question,
+        };
+      });
+
+      const totalQuestions = quizData.length;
+      const correctAnswers = results.filter((result) => result.isCorrect).length;
+      const incorrectAnswers = totalQuestions - correctAnswers;
+      const score = correctAnswers;
+      const percentage = (score / totalQuestions) * 100;
+
+      let grade;
+      if (percentage >= 80) {
+        grade = 'A';
+      } else if (percentage >= 70) {
+        grade = 'B';
+      } else if (percentage >= 40) {
+        grade = 'C';
+      } else if (percentage >= 20) {
+        grade = 'D';
+      } else {
+        grade = 'F';
       }
-    };
-  
-    saveResultToMongo();
-  
-  }, [User,category,grade,score]); 
-  
+
+      setGrade(grade);
+      setScore(score);
+      setCorrectAnswers(correctAnswers);
+      setIncorrectAnswers(incorrectAnswers);
+      setResults(results);
+
+      console.log('Result component rendered');
+
+      const saveResultToMongo = async () => {
+        const resultData = {
+          user: User,
+          category: category,
+          grade: grade,
+          score: score,
+        };
+        console.log('resultData', resultData);
+
+        try {
+          const response = await axios.post('http://localhost:8011/saveResult', resultData);
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error saving quiz result:', error.message);
+        }
+      };
+
+      saveResultToMongo();
+    }
+  }, [User, category, selecteData, quizData, navigate]);
 
   console.log('Rendering once inside useEffect');
+
+ 
     return (
       <>
       <header className='header text-white bg-[#24292E] h-80 flex justify-center items-center flex-col'>

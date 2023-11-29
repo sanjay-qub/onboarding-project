@@ -51,9 +51,7 @@ function Home() {
 
 
    useEffect(() => {
-    dispatch(setUserDetails(quizArray))
-   
-    
+    dispatch(setUserDetails(quizArrays))
    }, [])
    
 
@@ -116,12 +114,6 @@ const Item = styled(Paper)(({ theme }) => ({
      
  ]
 
- const handleCardClick = (title, category, level) => {
-
-
-  dispatch(setSelectedQuiz({ title, category, level }));
-  };
-
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -137,11 +129,16 @@ const Item = styled(Paper)(({ theme }) => ({
   };
  
   const handleStartQuiz = () => {
+    
     console.log('Name:', name);
     console.log('Email:', email);
     dispatch(setUserDetails({ name, email}));
   };
 
+  const handleCardClick = (title, category, level) => {
+  dispatch(setSelectedQuiz({ title, category, level }));
+    };
+  
 
 
   return (
@@ -198,7 +195,7 @@ const Item = styled(Paper)(({ theme }) => ({
           />
           <input
             onChange={(e) => setEmail(e.target.value)}
-            type="text"
+            type="email"
             placeholder="Email"
             className="block w-full border p-2 mb-4"
           />
@@ -211,6 +208,7 @@ const Item = styled(Paper)(({ theme }) => ({
               Start Quiz
             </button>
           </Link>
+
         </div>
       </div>
     </Modal>

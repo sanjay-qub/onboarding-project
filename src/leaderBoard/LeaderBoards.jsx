@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { Link } from 'react-router-dom';
 
 function LeaderBoards() {
   const [leaderboardData, setLeaderboardData] = useState(null);
@@ -19,6 +21,9 @@ function LeaderBoards() {
   }, []);
 
   return (
+    <>
+    <Link to={"/"}> <ArrowCircleLeftIcon fontSize="medium" style={{ marginTop:"3px" }}/></Link>
+   
     <div className="container  p-8">
       <h2 className="text-3xl font-bold mb-4">LeaderBoards</h2>
       {leaderboardData ? (
@@ -27,6 +32,7 @@ function LeaderBoards() {
         <tr>
           <th class="py-2 px-4 border-b text-left">Username</th>
           <th class="py-2 px-4 border-b text-left">Email</th>
+          <th class="py-2 px-4 border-b text-left">Date & Time</th>
           <th class="py-2 px-4 border-b text-left">Category</th>
           <th class="py-2 px-4 border-b text-left">Score</th>
           <th class="py-2 px-4 border-b text-left">Grade</th>
@@ -37,9 +43,11 @@ function LeaderBoards() {
           <tr key={index} class="bg-gray-100">
             <td class="py-2 px-4 border-b text-left">{user.name}</td>
             <td class="py-2 px-4 border-b text-left">{user.email}</td>
+            <td class="py-2 px-6 border-b text-left">{user.istFormattedDate}</td>  
             <td class="py-2 px-4 border-b text-left">{user.category} interview quetions</td>
             <td class="py-2 px-6 border-b text-left">{user.score}</td>
             <td class="py-2 px-6 border-b text-left">{user.grade}</td>
+            
           </tr>
         ))}
       </tbody>
@@ -49,6 +57,7 @@ function LeaderBoards() {
         <p className="text-gray-700">Loading leaderboard data...</p>
       )}
     </div>
+    </>
   );
 }
 

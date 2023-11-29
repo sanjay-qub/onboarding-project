@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom'; 
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,14 +41,17 @@ CustomTabPanel.propTypes = {
 };
 
 export default function BasicTabs() {
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const quizzdata = useSelector((state) => state.quizzSlice.quizData);
+  const category = useSelector((state) => state.quizzSlice.selectedQuiz);
   if(quizzdata){  localStorage.setItem("quizzdata", quizzdata[0].category);}
 
   console.log("quizdata",quizzdata)
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [value, setValue] = useState(0);
-
+  const isLastQuestion = value === quizzdata.length - 1;
   useEffect(() => {
     if (quizzdata) {
       const initialAnswers = quizzdata.map((question) => ({
@@ -57,6 +62,25 @@ export default function BasicTabs() {
       setSelectedAnswers(initialAnswers);
     }
   }, [quizzdata]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      // Check if Redux data is empty and navigate to the home page if true
+      if (!quizzdata) {
+        navigate('/');
+      } else {
+        const initialAnswers = quizzdata.map((question) => ({
+          id: question.id,
+          question: question.question,
+          answer: null,
+        }));
+        setSelectedAnswers(initialAnswers);
+      }
+    }, 1000); // Adjust the delay time as needed
+  
+    return () => clearTimeout(timeoutId);
+  }, [quizzdata, navigate]);
+  
 
 
   const handleChange = (event, newValue) => {
@@ -84,49 +108,39 @@ export default function BasicTabs() {
   }
     return (
       <>
-      <div className="w-full ">
+      <div className="w-full">
+        <Tabs value={value} onChange={handleChange} variant="scrollable" indicatorColor="transparent">
+          {quizzdata.map((question, index) => (
+            <Tab
+              key={index}
+              label={`Question ${index + 1}`}
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '20px',
+                margin: '0 8px',
+                textAlign: 'center',
+                display: 'grid',
+                gridTemplateColumns: '4fr 6fr',
+                gap: '30px',
+                background: value === index ? '#3cd458' : '',
+                transition: 'background-color 0.3s',
+                color: 'black',
+                '&.Mui-selected': {
+                  color: 'white',
+                },
+              }}
+            />
+          ))}
+        </Tabs>
 
-
-
-
-
-<Tabs value={value} onChange={handleChange} variant="scrollable" indicatorColor="transparent">
-  {quizzdata.map((question, index) => (
-    <Tab 
-      key={index}
-      label={`Question ${index + 1}`}
-      sx={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '20px',
-        margin: '0 8px',
-        textAlign: 'center',
-        display: 'grid',
-        gridTemplateColumns: '4fr 6fr',
-        gap: '30px',
-        background: value === index ? '#3cd458' : '',
-        transition: 'background-color 0.3s',
-        color: 'black', 
-        '&.Mui-selected': {
-          color: 'white',
-        },
-      }}
-    />
-  ))}
-</Tabs>
-
-
-
-
-
-    
         <CustomTabPanel value={value} index={value}>
           <div className="border-2 border-gray-300 p-4 my-4">
             <div className="text-center mb-4">
               <QuestionMarkIcon />
               {quizzdata[value].question}
             </div>
-    
+
             <div className="lg:grid grid-cols-1 gap-4  sm:grid-cols-2 ms-12 lg:ms-36  ">
               {Object.keys(quizzdata[value].answers)
                 .filter((key) => key.startsWith('answer_'))
@@ -136,22 +150,21 @@ export default function BasicTabs() {
                     return (
                       <Button
                         key={key}
-                        className="w-full  "
-                       variant="text"
+                        className="w-full"
+                        variant="text"
                         style={{
                           border: '1px solid black',
-                          borderRadius: 'rounded', 
+                          borderRadius: 'rounded',
                           background: selectedAnswers[value]?.answer === key ? '#3cd458' : '',
-                          color: selectedAnswers[value]?.answer === key ? 'white':'black',
+                          color: selectedAnswers[value]?.answer === key ? 'white' : 'black',
                           height: '3rem',
-                          maxWidth:"80%",
-                          fontSize:"10px",
-                          marginTop:"5px",
-                          '@media (max-width: 667px)': { 
+                          maxWidth: "80%",
+                          fontSize: "10px",
+                          marginTop: "5px",
+                          '@media (max-width: 667px)': {
                             height: '20rem',
-                            marginTop:"40px" 
+                            marginTop: "40px"
                           },
-                        
                         }}
                         onClick={() => handleCheckboxChange(value, key)}
                       >
@@ -163,49 +176,48 @@ export default function BasicTabs() {
                 })}
             </div>
 
-            
             <div className="flex justify-end space-x-4 mt-4">
-  <Button
-    variant="contained"
-    style={{
-      border: '1px solid black', 
-      borderRadius: 'rounded', 
-      color: 'black', 
-      backgroundColor: 'transparent', 
-      padding: '10px', 
-    }}
-    onClick={() => setValue((prevValue) => (prevValue - 1 + quizzdata.length) % quizzdata.length)}
-  >
-    Previous
-  </Button>
-  <Button
-    variant="contained"
-    style={{
-      border: '1px solid black', 
-      borderRadius: 'rounded', 
-      color: 'black', 
-      backgroundColor: 'transparent', 
-      padding: '10px', 
-    }}
-    onClick={() => setValue((prevValue) => (prevValue + 1) % quizzdata.length)}
-  >
-    Next
-  </Button>
-</div>
-
+              <Button
+                variant="contained"
+                style={{
+                  border: '1px solid black',
+                  borderRadius: 'rounded',
+                  color: 'black',
+                  backgroundColor: 'transparent',
+                  padding: '10px',
+                }}
+                onClick={() => setValue((prevValue) => (prevValue - 1 + quizzdata.length) % quizzdata.length)}
+              >
+                Previous
+              </Button>
+              {isLastQuestion ? (
+                <Link to="/Quizz/Result" className="flex justify-center">
+                  <Button
+                    className="w-11/12"
+                    variant="contained"
+                    onClick={handleSubmit}
+                  >
+                    SUBMIT QUIZZ
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  variant="contained"
+                  style={{
+                    border: '1px solid black',
+                    borderRadius: 'rounded',
+                    color: 'black',
+                    backgroundColor: 'transparent',
+                    padding: '10px',
+                  }}
+                  onClick={() => setValue((prevValue) => (prevValue + 1) % quizzdata.length)}
+                >
+                  Next
+                </Button>
+              )}
+            </div>
           </div>
         </CustomTabPanel>
-    
-        <Link to="/Quizz/Result" className="flex justify-center">
-          <Button 
-        
-            className="w-11/12"
-            variant="contained"
-            onClick={handleSubmit}
-          >
-            FINISH QUIZZ
-          </Button>
-        </Link>
       </div>
     </>
     
