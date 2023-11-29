@@ -5,7 +5,6 @@ const {v4 : uuidv4} = require('uuid');
 
 const resultModel = require('../models/resultModel');
 
-
 //  exports.createUser=async(req,res)=>{
 //     const {name,email,password}=req.body  
        
@@ -122,6 +121,20 @@ exports.findAll=async(req,res)=>{
 
 
 exports.saveResult = async (req, res) => {
+  const currentDate = new Date();
+const options = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  timeZone: 'Asia/Kolkata', // Set the time zone to IST
+};
+
+const istFormattedDate = currentDate.toLocaleString('en-IN', options);
+
     console.log("saveresult called ")
   try {
    
@@ -133,6 +146,7 @@ exports.saveResult = async (req, res) => {
         category,
         score,
         grade,
+        istFormattedDate
      };
 
 

@@ -20,6 +20,9 @@ const resultSchema = new mongoose.Schema({
     grade:{
         type:String,
 
+    },
+    istFormattedDate:{
+        type:String,
     }
     
 })
