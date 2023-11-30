@@ -1,9 +1,7 @@
 
 # Live Demo
 -----------
-<video width="720" height="240" controls>
-  <source src="/public/video/ScreenRecording1.mp4" type="video/mp4">
-</video>
+[![Watch the Video](thumbnail_image_url)](/public/video/ScreenRecording1.mp4)
 
 
 
